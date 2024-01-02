@@ -1,0 +1,14 @@
+{
+  "name": "shopspacebackend",
+  "version": "1.0.0",
+  "description": "Backend For ShopSpace",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "run": "nodemon index.js"
+  },
+  "keywords": ["Node","React","Express","MongoDB","Vercel"],
+  "author": "Siddhant Singh & Khushi Kandoi",
+  "license": "ISC"
+}
