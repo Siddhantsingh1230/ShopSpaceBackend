@@ -57,13 +57,3 @@ app.use("/v1", usersRouter); // v1 designation for v1 api
 app.get("/", (req, res) => {
   res.status(200).json({ success: true, message: "All Systems Normal 🟢" });
 });
-
-
-// Custom error handling middleware for failed authentication
-app.use((err, req, res, next) => {
-  if (err) {
-    const errorMessage = err.message || "Authentication failed";
-    return res.status(401).json({ success: false, message: errorMessage });
-  }
-  next();
-});
