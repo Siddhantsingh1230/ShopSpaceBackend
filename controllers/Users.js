@@ -1,5 +1,6 @@
 import { usersModel } from "../models/Users.js";
 import bcrypt from "bcrypt";
+import { sanitizeUser } from "../utils/services.js";
 
 export const getAllRegisteredUsers = async (req, res) => {
   const users = await usersModel.find({});
@@ -15,25 +16,12 @@ export const getAllRegisteredUsers = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-  const { email, password } = req.body;
-  let user = await usersModel.findOne({ email }).select("+password");
-  if (!user) {
-    return res.status(404).json({
-      success: false,
-      message: "Invalid email or password",
-    });
-  }
-
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) {
-    return res.status(404).json({
-      success: false,
-      message: "incorrect email or password",
-    });
-  }
-  res
-    .status(200)
-    .json({ success: true, message: `Welcome , ${user.username}` }, user);
+    console.log(req)
+  res.status(200).json({
+    success: true,
+    message: `Welcome , ${req.user.username}`,
+    user: sanitizeUser(req.user),
+  });
 };
 
 export const signup = async (req, res) => {
@@ -53,15 +41,27 @@ export const signup = async (req, res) => {
     password: hashedPassword,
   });
   //Send Registration successfull mail here
-  res
-    .status(200)
-    .json({ success: true, message: `Acccount Created | ${username}` }, user);
+  res.status(200).json({
+    success: true,
+    message: `Acccount Created | ${username}`,
+    user: sanitizeUser(user),
+  });
 };
 
 export const getUser = async (req, res) => {
   res.status(200).json({ success: true, user: req.user });
 };
 
-export const logout = async (req, res) => {
-  
+export const logout = (req, res) => {
+  try {
+    req.logout((err) => {
+      if (err) {
+        return next(err);
+      }
+      res.status(200).json({ success: true, message: "Logged out" });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, error });
+  }
 };

@@ -1,4 +1,6 @@
 import express from "express";
+import passport from "passport";
+
 const router = express.Router();
 import {
   getAllRegisteredUsers,
@@ -10,8 +12,12 @@ import {
 import { isAuthenticated } from "../middlewares/auth.js";
 
 router.get("/showusers", getAllRegisteredUsers); // for admin use
-router.post("/login", login);
-router.get("/logout", logout);
+router.post(
+  "/login",
+  passport.authenticate("local", { failureMessage: true,}),
+  login
+);
+router.post("/logout", logout);
 router.post("/signup", signup);
 router.get("/me", isAuthenticated, getUser);
 
