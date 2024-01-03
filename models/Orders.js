@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { cartsSchema } from "./Cart";
 
 const ordersSchema = new mongoose.Schema({
   checkoutEmail: {
@@ -46,9 +45,29 @@ const ordersSchema = new mongoose.Schema({
     ref:"users",
     required : true,
   },
-  cart:{
-    type: [cartsSchema],
+  cartId:{
+    type  : mongoose.Schema.Types.ObjectId,
+    ref:"carts",
+    required : true,
   }
 });
 
-export const cartsModel = mongoose.model("orders",ordersSchema)
+//created id from _id using virtual
+const virtual = ordersSchema.virtual("id");
+virtual.get(function () {
+  return this._id;
+});
+
+ordersSchema.set("toJSON", {
+  virtuals: true,
+  versionKey: false,
+  transform: (doc, ret) => {
+    // 'doc' is the original document
+    // 'ret' is the transformed object
+
+    // Remove the '_id' field from the output
+    delete ret._id;
+  },
+});
+
+export const ordersModel = mongoose.model("orders",ordersSchema)

@@ -66,7 +66,7 @@ virtual.get(function () {
   return this._id;
 });
 
-productsSchema.set("toJson", {
+productsSchema.set("toJSON", {
   virtuals: true,
   versionKey: false,
   transform: (doc, ret) => {

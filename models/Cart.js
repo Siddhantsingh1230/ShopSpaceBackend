@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { productsSchema } from "./Products";
 
 export const cartsSchema = new mongoose.Schema({
     userId: {
@@ -8,7 +7,7 @@ export const cartsSchema = new mongoose.Schema({
         required: true,
       },
     product: {
-        type: [productsSchema],
+        type: mongoose.Schema.Types.ObjectId,
         ref: "products",
         required: true,
       },
@@ -25,7 +24,7 @@ virtual.get(function () {
   return this._id;
 });
 
-cartsSchema.set("toJson", {
+cartsSchema.set("toJSON", {
   virtuals: true,
   versionKey: false,
   transform: (doc, ret) => {
