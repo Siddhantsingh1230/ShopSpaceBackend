@@ -16,6 +16,7 @@ export const getAllRegisteredUsers = async (req, res) => {
 };
 
 export const login = async (req, res) => {
+  // you will reach this only if ur sucessfully logged in else not
   res.status(200).json({
     success: true,
     message: `Welcome , ${req.user.username}`,
