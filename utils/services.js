@@ -6,6 +6,7 @@ export const sanitizeUser = (user) => {
     email,
     profileImageURL,
     enableNotifications,
+    role,
   } = user;
   return {
     _id,
@@ -14,5 +15,6 @@ export const sanitizeUser = (user) => {
     email,
     profileImageURL,
     enableNotifications,
+    role,
   };
 };

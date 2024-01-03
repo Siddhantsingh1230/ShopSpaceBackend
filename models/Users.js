@@ -38,6 +38,10 @@ const usersSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  role: {
+    type: String,
+    default: "astro", // role can be either Astro(nornal user) or admin
+  },
 });
 
 export const usersModel = mongoose.model("users", usersSchema);
