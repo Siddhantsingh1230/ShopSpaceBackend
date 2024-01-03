@@ -32,11 +32,10 @@ export const loginFailed = (req, res) => {
   });
 };
 
-export const signup = async (req, res, done) => {
+export const signup = async (req, res) => {
   const { username, mobileNo, email, password } = req.body;
   let user = await usersModel.findOne({ email }); // checking if user already exists or not
   if (user) {
-    done(null, false);
     return res.status(500).json({
       success: false,
       message: "User already exists",
@@ -52,8 +51,8 @@ export const signup = async (req, res, done) => {
   //Send Registration successfull mail here
   res.status(200).json({
     success: true,
-    message: `Acccount Created | ${username}`,
-    user: sanitizeUser(user),
+    message: `Welcome Astro | Goto Login`,
+    // user: sanitizeUser(user),// no need still sent for debugging
   });
 };
 
