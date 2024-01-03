@@ -2,20 +2,6 @@ import { usersModel } from "../models/Users.js";
 import bcrypt from "bcrypt";
 import { sanitizeUser } from "../utils/services.js";
 
-export const getAllRegisteredUsers = async (req, res) => {
-  // only admins can access this route
-  const users = await usersModel.find({});
-  if (!users) {
-    return res
-      .status(500)
-      .json({ success: false, message: "failed to fetch users" });
-  }
-  res.status(200).json({
-    success: true,
-    users,
-  });
-};
-
 export const login = async (req, res) => {
   // you will reach this only if ur sucessfully logged in else not
   res.status(200).json({
@@ -36,7 +22,6 @@ export const signup = async (req, res, done) => {
   const { username, mobileNo, email, password } = req.body;
   let user = await usersModel.findOne({ email }); // checking if user already exists or not
   if (user) {
-    done(null, false);
     return res.status(500).json({
       success: false,
       message: "User already exists",
@@ -48,6 +33,7 @@ export const signup = async (req, res, done) => {
     mobileNo,
     email,
     password: hashedPassword,
+    role: "admin",
   });
   //Send Registration successfull mail here
   res.status(200).json({

@@ -8,6 +8,7 @@ import { initializePassport } from "./passport/config.js";
 
 // Importing all Routes
 import usersRouter from "./routes/Users.js";
+import adminsRouter from "./routes/Admins.js";
 
 // Express app initilisation
 export const app = express();
@@ -32,7 +33,6 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-
 //CORS
 app.use(
   cors({
@@ -52,18 +52,9 @@ initializePassport(passport);
 
 // Routes
 app.use("/v1", usersRouter); // v1 designation for v1 api
+app.use("/v1/admin", adminsRouter); // v1 designation for v1 api
 
 //Default route
 app.get("/", (req, res) => {
   res.status(200).json({ success: true, message: "All Systems Normal 🟢" });
-});
-
-
-// Custom error handling middleware for failed authentication
-app.use((err, req, res, next) => {
-  if (err) {
-    const errorMessage = err.message || "Authentication failed";
-    return res.status(401).json({ success: false, message: errorMessage });
-  }
-  next();
 });
