@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 import {
-    getAllRegisteredUsers,
+  getAllRegisteredUsers,
   getUser,
   login,
   signup,
