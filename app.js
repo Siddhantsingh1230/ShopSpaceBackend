@@ -9,6 +9,8 @@ import { initializePassport } from "./passport/config.js";
 // Importing all Routes
 import usersRouter from "./routes/Users.js";
 import adminsRouter from "./routes/Admins.js";
+import brandsRouter from "./routes/Brands.js";
+import categoriesRouter from "./routes/Categories.js";
 
 // Express app initilisation
 export const app = express();
@@ -53,6 +55,8 @@ initializePassport(passport);
 // Routes
 app.use("/v1", usersRouter); // v1 designation for v1 api
 app.use("/v1/admin", adminsRouter); // v1 designation for v1 api
+app.use("/brands",brandsRouter);
+app.use("/categories",categoriesRouter);
 
 //Default route
 app.get("/", (req, res) => {

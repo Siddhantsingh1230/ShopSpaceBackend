@@ -7,6 +7,7 @@ export const getAllRegisteredUsers = async (req, res) => {
   const users = await usersModel.find({});
   if (!users) {
     return res
+    
       .status(500)
       .json({ success: false, message: "failed to fetch users" });
   }
