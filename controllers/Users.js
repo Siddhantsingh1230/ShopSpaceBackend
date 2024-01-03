@@ -16,7 +16,6 @@ export const getAllRegisteredUsers = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-    console.log(req)
   res.status(200).json({
     success: true,
     message: `Welcome , ${req.user.username}`,
@@ -24,10 +23,18 @@ export const login = async (req, res) => {
   });
 };
 
-export const signup = async (req, res) => {
+export const loginFailed = (req, res) => {
+  return res.status(500).json({
+    success: false,
+    message: "Invalid Credentials",
+  });
+};
+
+export const signup = async (req, res, done) => {
   const { username, mobileNo, email, password } = req.body;
   let user = await usersModel.findOne({ email }); // checking if user already exists or not
   if (user) {
+    done(null, false);
     return res.status(500).json({
       success: false,
       message: "User already exists",
