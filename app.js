@@ -3,12 +3,17 @@ import { configDotenv } from "dotenv";
 import path from "path";
 import cors from "cors";
 
+// Importing all Routes
+import usersRouter from "./routes/Users.js";
+
 // Express app initilisation
 export const app = express();
 
 //Middlewares
-app.use(express.json());
+app.use(express.json()); // for parsing json data from body
+app.use(express.urlencoded({ extended: true })); // for parsing html form data
 app.use(express.static(path.join(path.resolve(), "public")));
+
 //environment variables
 configDotenv({
   path: "./data/config.env",
@@ -19,7 +24,7 @@ app.use(
   cors({
     origin: [
       process.env.FRONTEND_URI,
-      process.env.ADMIN_FRONTEND_URI,
+      process.env.ADMIN_URI,
       "http://localhost:5000",
       "http://localhost:3000",
     ],
@@ -27,6 +32,9 @@ app.use(
     credentials: true,
   })
 );
+
+// Routes
+app.use("/v1", usersRouter); // v1 designation for v1 api
 
 //Default route
 app.get("/", (req, res) => {

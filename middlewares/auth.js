@@ -1,0 +1,8 @@
+const isAuthenticated = (req, res, next) => {
+  const { user } = req.body;
+  if (!user) {
+    return res.status(404).json({ success: false, message: "Login to access" });
+  }
+  // user is already logged in
+  next();
+};
