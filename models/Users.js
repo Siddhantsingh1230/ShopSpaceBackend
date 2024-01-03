@@ -14,9 +14,6 @@ const usersSchema = new mongoose.Schema({
     type: String,
     unique: true,
     required: true,
-    trim: true,
-    lowercase: true,
-    match: /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/,
   },
   password: {
     type: String,
@@ -44,24 +41,6 @@ const usersSchema = new mongoose.Schema({
   role: {
     type: String,
     default: "astro", // role can be either Astro(nornal user) or admin
-  },
-});
-
-//created id from _id using virtual
-const virtual = usersSchema.virtual("id");
-virtual.get(function () {
-  return this._id;
-});
-
-usersSchema.set("toJSON", {
-  virtuals: true,
-  versionKey: false,
-  transform: (doc, ret) => {
-    // 'doc' is the original document
-    // 'ret' is the transformed object
-
-    // Remove the '_id' field from the output
-    delete ret._id;
   },
 });
 

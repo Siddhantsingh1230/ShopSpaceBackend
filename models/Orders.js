@@ -4,9 +4,6 @@ const ordersSchema = new mongoose.Schema({
   checkoutEmail: {
     type: String,
     required: true,
-    trim: true,
-    lowercase: true,
-    match: /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/,
   },
   billingaddress: {
     type: String,
@@ -50,24 +47,6 @@ const ordersSchema = new mongoose.Schema({
     ref:"carts",
     required : true,
   }
-});
-
-//created id from _id using virtual
-const virtual = ordersSchema.virtual("id");
-virtual.get(function () {
-  return this._id;
-});
-
-ordersSchema.set("toJSON", {
-  virtuals: true,
-  versionKey: false,
-  transform: (doc, ret) => {
-    // 'doc' is the original document
-    // 'ret' is the transformed object
-
-    // Remove the '_id' field from the output
-    delete ret._id;
-  },
 });
 
 export const ordersModel = mongoose.model("orders",ordersSchema)

@@ -60,22 +60,4 @@ export const productsSchema = new moongoose.schema({
   },
 });
 
-//created id from _id using virtual
-const virtual = productsSchema.virtual("id");
-virtual.get(function () {
-  return this._id;
-});
-
-productsSchema.set("toJSON", {
-  virtuals: true,
-  versionKey: false,
-  transform: (doc, ret) => {
-    // 'doc' is the original document
-    // 'ret' is the transformed object
-
-    // Remove the '_id' field from the output
-    delete ret._id;
-  },
-});
-
 export const productsModel = mongoose.model("products",productsSchema);
