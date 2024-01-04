@@ -9,6 +9,8 @@ import {
   signup,
   logout,
   loginFailed,
+  updateUser,
+  deleteUser,
 } from "../controllers/Users.js";
 import { isAdmin, isAuthenticated } from "../middlewares/auth.js";
 
@@ -25,5 +27,7 @@ router.get("/loginfailed", loginFailed);
 router.get("/logout", logout);
 router.post("/signup", signup);
 router.get("/me", isAuthenticated, getUser);
+router.put("/update/:id", isAuthenticated, updateUser);
+router.delete("/delete/:id", isAuthenticated, deleteUser);
 
 export default router;

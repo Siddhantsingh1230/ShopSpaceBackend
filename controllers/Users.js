@@ -7,7 +7,7 @@ export const getAllRegisteredUsers = async (req, res) => {
   const users = await usersModel.find({});
   if (!users) {
     return res
-    
+
       .status(500)
       .json({ success: false, message: "failed to fetch users" });
   }
@@ -72,5 +72,43 @@ export const logout = (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, error });
+  }
+};
+
+export const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await usersModel.findByIdAndDelete(id);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not deleted" });
+    }
+    res.status(200).json({ success: true, message: "User Deleted" });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: "Error" + error });
+  }
+};
+
+export const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await usersModel.findByIdAndUpdate(id, req.body, { new: true });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found!",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Details updated!",
+      user: sanitizeUser(user),
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error:" + error,
+    });
   }
 };
