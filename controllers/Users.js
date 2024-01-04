@@ -93,7 +93,14 @@ export const deleteUser = async (req, res) => {
 export const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await usersModel.findByIdAndUpdate(id, req.body, { new: true });
+    let hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const user = await usersModel.findByIdAndUpdate(
+      id,
+      { ...req.body, password: hashedPassword },
+      {
+        new: true,
+      }
+    );
     if (!user) {
       return res.status(404).json({
         success: false,
