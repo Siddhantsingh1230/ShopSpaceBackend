@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export const productsSchema = new moongoose.schema({
+const productsSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
@@ -28,7 +28,7 @@ export const productsSchema = new moongoose.schema({
     required: true,
   },
   stock: {
-    type: 94,
+    type: Number,
     min: 0,
     required: true,
   },
@@ -48,6 +48,11 @@ export const productsSchema = new moongoose.schema({
     type: String,
     required: true,
   },
+  viewCount: {
+    type: Number,
+    default: 0,
+    min: 0,
+  },
   images: {
     type: [String],
     required: true,
@@ -60,4 +65,4 @@ export const productsSchema = new moongoose.schema({
   },
 });
 
-export const productsModel = mongoose.model("products",productsSchema);
+export const productsModel = mongoose.model("products", productsSchema);
