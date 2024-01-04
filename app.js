@@ -20,6 +20,7 @@ export const app = express();
 app.use(express.json()); // for parsing json data from body
 app.use(express.urlencoded({ extended: true })); // for parsing html form data
 app.use(express.static(path.join(path.resolve(), "public")));
+app.set("view engine", "ejs");
 //environment variables
 configDotenv({
   path: "./data/config.env",
