@@ -1,13 +1,9 @@
 import mongoose from "mongoose";
-import { cartsSchema } from "./Cart";
 
 const ordersSchema = new mongoose.Schema({
   checkoutEmail: {
     type: String,
     required: true,
-    trim: true,
-    lowercase: true,
-    match: /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/,
   },
   billingaddress: {
     type: String,
@@ -46,9 +42,11 @@ const ordersSchema = new mongoose.Schema({
     ref:"users",
     required : true,
   },
-  cart:{
-    type: [cartsSchema],
+  cartId:{
+    type  : mongoose.Schema.Types.ObjectId,
+    ref:"carts",
+    required : true,
   }
 });
 
-export const cartsModel = mongoose.model("orders",ordersSchema)
+export const ordersModel = mongoose.model("orders",ordersSchema)
