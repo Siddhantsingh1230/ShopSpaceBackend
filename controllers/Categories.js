@@ -24,21 +24,44 @@ export const getAllCategories = async (req, res) => {
 
 export const addCategory = async (req, res) => {
   try {
-    const { value, label } = req.body;
-    let existingCategory = await categoriesModel.findOne({label : label });
+    const category = req.body;
+    let existingCategory = await categoriesModel.findOne({
+      label: category.label,
+    });
     if (existingCategory) {
       return res.status(500).json({
         success: false,
         message: "Category already exist",
       });
     }
-    let category = await categoriesModel.create({
-      value,
-      label,
-    });
-    return res.status(500).json({
+    let result = await categoriesModel.create(category);
+    return res.status(200).json({
       success: true,
-      category: category,
+      result: result,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+export const updateCategory = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const category = req.body;
+    let result = await categoriesModel.updateOne({ _id: id }, category);
+    if (!result) {
+      return res.status(400).json({
+        success: true,
+        result: result,
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      result: result,
     });
   } catch (error) {
     console.error(error);

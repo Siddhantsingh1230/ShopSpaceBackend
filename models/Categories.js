@@ -1,20 +1,24 @@
 import mongoose from "mongoose";
 
-const categorySchema = new mongoose.Schema({
-  value: {
+const subcategorySchema = new mongoose.Schema({
+  name: {
     type: String,
-    required: true,
-    unique: true,
   },
+  itemCount: {
+    type: Number,
+    default: 0,
+  },
+}, { _id: false });
+
+const categorySchema = new mongoose.Schema({
   label: {
     type: String,
     required: true,
-    unique: true,
+    unique : true,
   },
-  checked: {
-    //not required
-    type: Boolean,
-    default: false,
+  subcategories: {
+    type: [subcategorySchema],
+    default: [],
   },
 });
 
