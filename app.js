@@ -9,9 +9,11 @@ import { initializePassport } from "./passport/config.js";
 // Importing all Routes
 import usersRouter from "./routes/Users.js";
 import adminsRouter from "./routes/Admins.js";
-import brandsRouter from "./routes/Brands.js";
 import categoriesRouter from "./routes/Categories.js";
 import productsRouter from "./routes/Products.js";
+import reviewsRouter from "./routes/Reviews.js";
+import orderLocationRouter from "./routes/OrderLocation.js";
+import orderRouter from "./routes/Orders.js";
 
 // Express app initilisation
 export const app = express();
@@ -57,9 +59,11 @@ initializePassport(passport);
 // Routes
 app.use("/v1", usersRouter); // v1 designation for v1 api
 app.use("/v1/admin", adminsRouter); // v1 designation for v1 api
-app.use("/brands", brandsRouter);
 app.use("/categories", categoriesRouter);
 app.use("/products", productsRouter);
+app.use("/reviews", reviewsRouter);
+app.use("/orderLocations", orderLocationRouter);
+app.use("/orders",orderRouter);
 
 //Default route
 app.get("/", (req, res) => {
