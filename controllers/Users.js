@@ -1,6 +1,6 @@
 import { usersModel } from "../models/Users.js";
 import bcrypt from "bcrypt";
-import { sanitizeUser } from "../utils/services.js";
+import { sanitizeUser, sendRegMail } from "../utils/services.js";
 
 export const getAllRegisteredUsers = async (req, res) => {
   // only admins can access this route
@@ -50,6 +50,14 @@ export const signup = async (req, res) => {
     password: hashedPassword,
   });
   //Send Registration successfull mail here
+  sendRegMail(
+    username,
+    new Date().getFullYear(),
+    process.env.EMAIL_ID,
+    process.env.EMAIL_PASS,
+    email,
+    `Welcome,${username} to ShopSpace`
+  );
   res.status(200).json({
     success: true,
     message: `Welcome Astro | Goto Login`,
@@ -84,7 +92,7 @@ export const deleteUser = async (req, res) => {
         .status(404)
         .json({ success: false, message: "User not deleted" });
     }
-    res.status(200).json({ success: true, message: "User Deleted" });
+    res.status(200).json({ success: true, message: "Account Deleted" });
   } catch (error) {
     return res.status(500).json({ success: false, message: "Error" + error });
   }

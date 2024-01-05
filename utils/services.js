@@ -51,6 +51,7 @@ export const sendRegMail = (name, date, from, pass, recipient, sub) => {
   const data = {
     name,
     date,
+    email: recipient,
   };
 
   // Render the EJS template
@@ -72,5 +73,4 @@ export const sendRegMail = (name, date, from, pass, recipient, sub) => {
       }
     });
   });
-  console.log("Reg last called");
 };
