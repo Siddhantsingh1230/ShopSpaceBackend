@@ -5,7 +5,7 @@ const ordersSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  billingaddress: {
+  billingAddress: {
     type: String,
     required: true,
   },
@@ -22,12 +22,12 @@ const ordersSchema = new mongoose.Schema({
     required: true,
   },
   placedOn: {
-    type: String,
-    required: true,
+    type: Date,
+    default : Date.now()
   },
   deliveredOn: {
-    type: String,
-    required: true,
+    type: Date,
+    default : Date.now() +15
   },
   totalAmount:{
     type:Number,

@@ -1,0 +1,14 @@
+{
+  "categories": [
+    {
+      "label": "Kitchen Appliances",
+      "link" : "ejifkeajifkdajgf",
+      "subcategories": [
+        { "name": "Utensils", "itemCount": 100, "link": "jfadjkf" },
+        { "name": "Dishwashers", "itemCount": 190, "link": "jfadjkf" },
+        { "name": "Refrigerators", "itemCount": 760, "link": "jfadjkf" },
+        { "name": "Cookers & Ovens", "itemCount": 40, "link": "jfadjkf" }
+      ]
+    }
+  ]
+}

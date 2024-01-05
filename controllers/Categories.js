@@ -54,8 +54,8 @@ export const updateCategory = async (req, res) => {
     const category = req.body;
     let result = await categoriesModel.updateOne({ _id: id }, category);
     if (!result) {
-      return res.status(400).json({
-        success: true,
+      return res.status(500).json({
+        success: false,
         result: result,
       });
     }
