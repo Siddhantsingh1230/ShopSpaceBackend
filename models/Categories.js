@@ -10,10 +10,10 @@ const subcategorySchema = new mongoose.Schema({
     default: 0,
     required: true,
   },
-  link: {
+  src:{
     type: String,
-    required: true,
-  },
+    required:true
+  }
 }, { _id: false });
 
 const categorySchema = new mongoose.Schema({
@@ -22,10 +22,15 @@ const categorySchema = new mongoose.Schema({
     required: true,
     unique : true,
   },
+  src:{
+    type: String,
+    required:true
+  },
   subcategories: {
     type: [subcategorySchema],
     default: [],
   },
+  
 });
 
 export const categoriesModel = mongoose.model("categories", categorySchema);
