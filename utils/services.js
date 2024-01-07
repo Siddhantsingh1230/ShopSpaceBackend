@@ -96,7 +96,7 @@ export const sendPasswordResetMail = (
     from: from,
     to: recipient,
     subject: `Reset Password | ${name}'s Account `,
-    text: `Visit think link to reset your password (${date}) ,but note that this link is valid for only 5 minutes ${link}`,
+    text: `Click the link below to reset your password (${date}) . Ensure you complete the reset process within the next 5 minutes for security reasons ,Link:  ${link}`,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
