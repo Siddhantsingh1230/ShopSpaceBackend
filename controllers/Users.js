@@ -1,6 +1,11 @@
 import { usersModel } from "../models/Users.js";
 import bcrypt from "bcrypt";
-import { sanitizeUser, sendRegMail } from "../utils/services.js";
+import jwt from "jsonwebtoken";
+import {
+  sanitizeUser,
+  sendPasswordResetMail,
+  sendRegMail,
+} from "../utils/services.js";
 
 export const getAllRegisteredUsers = async (req, res) => {
   // only admins can access this route
@@ -126,4 +131,59 @@ export const updateUser = async (req, res) => {
       message: "Error:" + error,
     });
   }
+};
+
+export const forgotpassword = async (req, res) => {
+  const { email } = req.body;
+  let user = await usersModel.findOne({ email }); // checking if user already exists or not
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+    });
+  }
+  const token = jwt.sign(
+    {
+      id: user._id,
+    },
+    process.env.SECRET_KEY,
+    { expiresIn: 300 }
+  );
+  const link = `http://localhost:3000/resetpassword/${user._id}/${token}`;
+  sendPasswordResetMail(
+    user.username,
+    new Date().toLocaleString(),
+    process.env.EMAIL_ID,
+    process.env.EMAIL_PASS,
+    user.email,
+    link
+  );
+  res.status(200).json({ success: true, message: "Check your email" });
+};
+export const resetpassword = async (req, res) => {
+  const { id, password, token } = req.body;
+  let user = await usersModel.findById(id); // checking if user already exists or not
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+    });
+  }
+  jwt.verify(token, process.env.SECRET_KEY, async (err, decoded) => {
+    if (err) {
+      return res.status(500).json({
+        success: false,
+        message: "Token Expired",
+      });
+    }
+    let hashedPassword = await bcrypt.hash(password, 10);
+    user = await usersModel.findByIdAndUpdate(id, { password: hashedPassword });
+    res.status(200).json({
+      success: true,
+      message: "Password updated",
+    });
+  });
+  req.logout((error) => {
+    // console.log(error);
+  });
 };

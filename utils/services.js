@@ -74,3 +74,36 @@ export const sendRegMail = (name, date, from, pass, recipient, sub) => {
     });
   });
 };
+
+// Sends mail on ResetPassword request
+export const sendPasswordResetMail = (
+  name,
+  date,
+  from,
+  pass,
+  recipient,
+  link
+) => {
+  var transporter = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user: from,
+      pass: pass,
+    },
+  });
+
+  var mailOptions = {
+    from: from,
+    to: recipient,
+    subject: `Reset Password | ${name}'s Account `,
+    text: `Visit think link to reset your password (${date}) ,but note that this link is valid for only 5 minutes ${link}`,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+};
