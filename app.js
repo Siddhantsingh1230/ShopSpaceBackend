@@ -14,6 +14,7 @@ import productsRouter from "./routes/Products.js";
 import reviewsRouter from "./routes/Reviews.js";
 import orderLocationRouter from "./routes/OrderLocation.js";
 import orderRouter from "./routes/Orders.js";
+import wishlistRouter from "./routes/wishlist.js";
 
 // Express app initilisation
 export const app = express();
@@ -64,6 +65,7 @@ app.use("/products", productsRouter);
 app.use("/reviews", reviewsRouter);
 app.use("/orderLocations", orderLocationRouter);
 app.use("/orders",orderRouter);
+app.use("/wishlist",wishlistRouter);
 
 //Default route
 app.get("/", (req, res) => {
