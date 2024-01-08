@@ -60,12 +60,12 @@ initializePassport(passport);
 // Routes
 app.use("/v1", usersRouter); // v1 designation for v1 api
 app.use("/v1/admin", adminsRouter); // v1 designation for v1 api
-app.use("/categories", categoriesRouter);
-app.use("/products", productsRouter);
-app.use("/reviews", reviewsRouter);
-app.use("/orderLocations", orderLocationRouter);
-app.use("/orders",orderRouter);
-app.use("/wishlist",wishlistRouter);
+app.use("/v1/categories", categoriesRouter); // v1 designation for v1 api
+app.use("/v1/products", productsRouter); // v1 designation for v1 api
+app.use("/v1/reviews", reviewsRouter); // v1 designation for v1 api
+app.use("/v1/orderLocations", orderLocationRouter); // v1 designation for v1 api
+app.use("/v1/orders",orderRouter); // v1 designation for v1 api
+app.use("/v1/wishlist",wishlistRouter); // v1 designation for v1 api
 
 //Default route
 app.get("/", (req, res) => {

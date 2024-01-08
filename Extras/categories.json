@@ -1,0 +1,144 @@
+[
+  {
+    "label": "Electronics",
+    "src": "https://i.dummyjson.com/data/products/1/1.jpg",
+    "subcategories": [
+      {
+        "name": "smartphones",
+        "itemCount": 5,
+        "src": "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg"
+      },
+      {
+        "name": "laptops",
+        "itemCount": 5,
+        "src": "https://cdn.dummyjson.com/product-images/6/thumbnail.jpg"
+      }
+    ]
+  },
+  {
+    "label": "Beauty & Care",
+    "src": "https://i.dummyjson.com/data/products/11/1.jpg",
+    "subcategories": [
+      {
+        "name": "fragrances",
+        "itemCount": 5,
+        "src": "https://cdn.dummyjson.com/product-images/11/thumbnail.jpg"
+      },
+      {
+        "name": "skincare",
+        "itemCount": 5,
+        "src": "https://cdn.dummyjson.com/product-images/16/thumbnail.jpg"
+      }
+    ]
+  },
+  {
+    "label": "Home Essentials",
+    "src": "https://i.dummyjson.com/data/products/21/1.jpg",
+    "subcategories": [
+      {
+        "name": "groceries",
+        "itemCount": 5,
+        "src": "https://cdn.dummyjson.com/product-images/21/thumbnail.jpg"
+      },
+      {
+        "name": "home-decoration",
+        "itemCount": 5,
+        "src": "https://cdn.dummyjson.com/product-images/26/thumbnail.jpg"
+      },
+      {
+        "name": "furniture",
+        "itemCount": 5,
+        "src": "https://cdn.dummyjson.com/product-images/31/thumbnail.jpg"
+      },
+      {
+        "name": "lighting",
+        "itemCount": 5,
+        "src": "https://cdn.dummyjson.com/product-images/96/thumbnail.jpg"
+      }
+    ]
+  },
+  {
+    "label": "Women's wear",
+    "src": "https://i.dummyjson.com/data/products/36/1.jpg",
+    "subcategories": [
+      {
+        "name": "tops",
+        "itemCount": 5,
+        "src": "https://cdn.dummyjson.com/product-images/36/thumbnail.jpg"
+      },
+      {
+        "name": "womens-dresses",
+        "itemCount": 5,
+        "src": "https://cdn.dummyjson.com/product-images/41/thumbnail.jpg"
+      },
+      {
+        "name": "womens-shoes",
+        "itemCount": 5,
+        "src": "https://cdn.dummyjson.com/product-images/46/thumbnail.jpg"
+      },
+      {
+        "name": "womens-watches",
+        "itemCount": 5,
+        "src": "https://cdn.dummyjson.com/product-images/66/thumbnail.jpg"
+      },
+      {
+        "name": "womens-bags",
+        "itemCount": 5,
+        "src": "https://cdn.dummyjson.com/product-images/71/thumbnail.jpg"
+      },
+      {
+        "name": "womens-jewellery",
+        "itemCount": 5,
+        "src": "https://cdn.dummyjson.com/product-images/76/thumbnail.jpg"
+      }
+    ]
+  },
+  {
+    "label": "Men's wear",
+    "src": "https://i.dummyjson.com/data/products/51/1.jpg",
+    "subcategories": [
+      {
+        "name": "mens-shirts",
+        "itemCount": 5,
+        "src": "https://cdn.dummyjson.com/product-images/51/thumbnail.jpg"
+      },
+      {
+        "name": "mens-shoes",
+        "itemCount": 5,
+        "src": "https://cdn.dummyjson.com/product-images/56/thumbnail.jpg"
+      },
+      {
+        "name": "mens-watches",
+        "itemCount": 5,
+        "src": "https://cdn.dummyjson.com/product-images/61/thumbnail.jpg"
+      }
+    ]
+  },
+  {
+    "label": "Sunglasses",
+    "src": "https://i.dummyjson.com/data/products/81/1.jpg",
+    "subcategories": [
+      {
+        "name": "sunglasses",
+        "itemCount": 5,
+        "src": "https://cdn.dummyjson.com/product-images/81/thumbnail.jpg"
+      }
+    ]
+  },
+  {
+    "label": "Vehicles",
+    "src": "https://i.dummyjson.com/data/products/86/1.jpg",
+    "subcategories": [
+      {
+        "name": "automotive",
+        "itemCount": 5,
+        "src": "https://cdn.dummyjson.com/product-images/86/thumbnail.jpg"
+      },
+      {
+        "name": "motorcycle",
+        "itemCount": 5,
+        "src": "https://cdn.dummyjson.com/product-images/91/thumbnail.jpg"
+      }
+    ]
+  }
+]
