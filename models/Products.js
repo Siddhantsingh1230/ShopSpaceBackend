@@ -17,7 +17,7 @@ const productsSchema = new mongoose.Schema({
   },
   discountPercentage: {
     type: Number,
-    min: 1,
+    min: 0,
     max: 99.99,
     required: true,
   },
@@ -36,7 +36,15 @@ const productsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  sale :{
+    type : Boolean,
+    default:false,
+  },
   category: {
+    type: String,
+    required: true,
+  },
+  subCategory: {
     type: String,
     required: true,
   },
@@ -56,12 +64,6 @@ const productsSchema = new mongoose.Schema({
   images: {
     type: [String],
     required: true,
-    validated: {
-      validator: function (value) {
-        return Array.isArray(value) && value.length > 0;
-      },
-      message: "Images must not be empty",
-    },
   },
 });
 
