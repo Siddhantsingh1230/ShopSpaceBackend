@@ -9,18 +9,43 @@ export const getAllProducts = async (req, res) => {
         message: "failed to fetch products",
       });
     }
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
-      products: products,
+      products,
     });
   } catch (error) {
-    if (error) {
+    return res.status(500).json({
+      success: false,
+      message: error,
+    });
+  }
+};
+export const getQuantizedProducts = async (req, res) => {
+  try {
+    const { quantum, page } = req.params;
+    const products = await productsModel
+      .find({})
+      .sort({ rating: -1 })
+      .skip(quantum * (parseInt(page) + 1 - 1))
+      .limit(quantum);
+    const count = await productsModel.countDocuments();
+    if (!products) {
       return res.status(500).json({
         success: false,
-        message: "internal server error",
-        error: error,
+        message: "failed to fetch products",
       });
     }
+    res.status(200).json({
+      success: true,
+      products,
+      pagesReturned: parseInt(page) + 1,
+      count,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error,
+    });
   }
 };
 
