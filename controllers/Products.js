@@ -23,12 +23,23 @@ export const getAllProducts = async (req, res) => {
 export const getQuantizedProducts = async (req, res) => {
   try {
     const { quantum, page } = req.params;
+    const searchKeyword = decodeURIComponent(req.query.s);
+    const regex = searchKeyword ? new RegExp(searchKeyword, "i") : /.*/;
+    const query = {
+      $or: [
+        { title: { $regex: regex } },
+        { category: { $regex: regex } },
+        { brand: { $regex: regex } },
+        { subCategory: { $regex: regex } },
+      ],
+    };
+    // Count the number of documents that match the query
+    const count = await productsModel.countDocuments(query);
     const products = await productsModel
-      .find({})
+      .find(query)
       .sort({ rating: -1 })
       .skip(quantum * (parseInt(page) + 1 - 1))
       .limit(quantum);
-    const count = await productsModel.countDocuments();
     if (!products) {
       return res.status(500).json({
         success: false,
@@ -42,6 +53,7 @@ export const getQuantizedProducts = async (req, res) => {
       count,
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       success: false,
       message: error,
