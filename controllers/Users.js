@@ -1,4 +1,5 @@
 import { usersModel } from "../models/Users.js";
+import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import {
@@ -185,5 +186,20 @@ export const resetpassword = async (req, res) => {
   });
   req.logout((error) => {
     // console.log(error);
+  });
+};
+
+export const getUserNameByUserId = async (req, res) => {
+  let { id } = req.params;
+  id = new mongoose.Types.ObjectId(parseInt(id.trim()));
+  const user = await usersModel.findById(id);
+  if (!user) {
+    return res
+      .status(500)
+      .json({ success: false, message: "failed to fetch user" });
+  }
+  res.status(200).json({
+    success: true,
+    username: user.username,
   });
 };

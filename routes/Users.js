@@ -1,7 +1,6 @@
 import express from "express";
 import passport from "passport";
 
-
 const router = express.Router();
 import {
   getAllRegisteredUsers,
@@ -14,6 +13,7 @@ import {
   deleteUser,
   forgotpassword,
   resetpassword,
+  getUserNameByUserId,
 } from "../controllers/Users.js";
 import { isAdmin, isAuthenticated } from "../middlewares/auth.js";
 
@@ -34,5 +34,6 @@ router.put("/update/:id", isAuthenticated, updateUser);
 router.delete("/delete/:id", isAuthenticated, deleteUser);
 router.post("/forgotpassword", forgotpassword);
 router.post("/resetpassword", resetpassword);
+router.get("/user/:id", getUserNameByUserId);
 
 export default router;
