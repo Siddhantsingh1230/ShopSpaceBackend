@@ -1,4 +1,5 @@
 import { productsModel } from "../models/Products.js";
+import mongoose from "mongoose";
 
 export const getAllProducts = async (req, res) => {
   try {
@@ -151,5 +152,28 @@ export const filterProduct = async (req, res) => {
         error: error,
       });
     }
+  }
+};
+
+export const getProductById = async (req, res) => {
+  let { id } = req.params;
+  try {
+    id = new mongoose.Types.ObjectId(id.trim());
+    const product = await productsModel.findById(id);
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "No products found",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      product,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error,
+    });
   }
 };
