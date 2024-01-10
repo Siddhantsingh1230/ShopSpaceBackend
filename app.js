@@ -15,6 +15,7 @@ import reviewsRouter from "./routes/Reviews.js";
 import orderLocationRouter from "./routes/OrderLocation.js";
 import orderRouter from "./routes/Orders.js";
 import wishlistRouter from "./routes/Wishlist.js";
+import cartRouter from "./routes/Cart.js"
 
 // Express app initilisation
 export const app = express();
@@ -66,6 +67,7 @@ app.use("/v1/reviews", reviewsRouter); // v1 designation for v1 api
 app.use("/v1/orderLocations", orderLocationRouter); // v1 designation for v1 api
 app.use("/v1/orders",orderRouter); // v1 designation for v1 api
 app.use("/v1/wishlist",wishlistRouter); // v1 designation for v1 api
+app.use("/v1/cart",cartRouter); // v1 designation for v1 api
 
 //Default route
 app.get("/", (req, res) => {
