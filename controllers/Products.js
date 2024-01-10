@@ -177,3 +177,88 @@ export const getProductById = async (req, res) => {
     });
   }
 };
+
+export const incViewCount = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const product = await productsModel.findOneAndUpdate(
+      { _id: id },
+      { $inc: { viewCount: 1 } }, // Increment viewCount by 1
+      { new: true }
+    );
+    res.status(200).json({
+      success: true,
+      viewCount: product.viewCount,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error,
+    });
+  }
+};
+
+export const topviewed = async (req, res) => {
+  try {
+    // Finds the top 5 products based on viewCount
+    const topProducts = await productsModel.aggregate([
+      {
+        $group: {
+          _id: "$category", // Group by category
+          topProduct: { $first: "$$ROOT" }, // Take the top product from each group
+        },
+      },
+      {
+        $replaceRoot: { newRoot: "$topProduct" }, // Replace the root document with the top product
+      },
+      {
+        $sort: { viewCount: -1 }, // Sort in descending order based on viewCount
+      },
+      {
+        $limit: 5, // Limit to the top 5 products
+      },
+    ]);
+
+    res.status(200).json({ success: true, products: topProducts });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: error,
+    });
+  }
+};
+
+export const toprated = async (req, res) => {
+  try {
+    // Find the top-rated 4 products based on the rating
+    const topRatedProducts = await productsModel
+      .find({})
+      .sort({ rating: -1 }) // Sort in descending order based on rating
+      .limit(4); // Limit to the top 4 products
+
+    res.status(200).json({ success: true, products: topRatedProducts });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: error,
+    });
+  }
+};
+
+export const latestproducts = async (req, res) => {
+  try {
+    // Find the top 4 latest products based on the createdAt field
+    const latestProducts = await productsModel.find({})
+      .sort({ createdAt: -1 })
+      .limit(4);
+    res.status(200).json({ success: true, products: latestProducts });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: error,
+    });
+  }
+};
