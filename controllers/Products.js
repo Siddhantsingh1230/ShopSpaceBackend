@@ -203,16 +203,16 @@ export const topviewed = async (req, res) => {
     // Finds the top 5 products based on viewCount
     const topProducts = await productsModel.aggregate([
       {
+        $sort: { category: 1, viewCount: -1 }, // Sort by category and then by viewCount in descending order
+      },
+      {
         $group: {
           _id: "$category", // Group by category
-          topProduct: { $first: "$$ROOT" }, // Take the top product from each group
+          topProduct: { $first: "$$ROOT" }, // Take the top product from each category
         },
       },
       {
         $replaceRoot: { newRoot: "$topProduct" }, // Replace the root document with the top product
-      },
-      {
-        $sort: { viewCount: -1 }, // Sort in descending order based on viewCount
       },
       {
         $limit: 5, // Limit to the top 5 products
