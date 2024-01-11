@@ -3,7 +3,7 @@ import { cartsModel } from "../models/Cart.js";
 export const getAllCarts = async (req, res) => {
   try {
     const { id } = req.params;
-    const cart = await cartsModel.find({ userId: id });
+    const cart = await cartsModel.find({ userId: id }).populate("productId");
     if (cart) {
       return res.status(200).json({
         success: true,
@@ -15,12 +15,10 @@ export const getAllCarts = async (req, res) => {
       message: "cart not found",
     });
   } catch (error) {
-    if (error) {
-      return res.status(400).json({
-        success: false,
-        error: error.message,
-      });
-    }
+    return res.status(400).json({
+      success: false,
+      error: error.message,
+    });
   }
 };
 
@@ -64,12 +62,14 @@ export const addCart = async (req, res) => {
 
 export const deleteCart = async (req, res) => {
   try {
-    const {id} = req.body;
-    let cart = await cartsModel.findByIdAndDelete(id);
-    if (cart) {
+    const { id } = req.params;
+    const { userId } = req.body;
+    let result = await cartsModel.findByIdAndDelete(id);
+    if (result) {
+      let cart = await cartsModel.find({userId: userId }).populate("productId");
       return res.status(200).json({
         success: true,
-        message: "cart deleted",
+        cart: cart,
       });
     }
     return res.status(400).json({
@@ -96,6 +96,7 @@ export const updateCart = async (req, res) => {
     );
 
     if (cart) {
+      cart = await cartsModel.find({ userId }).populate("productId");
       return res.status(200).json({
         success: true,
         message: "cart updated",
