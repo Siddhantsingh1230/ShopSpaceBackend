@@ -3,8 +3,8 @@ import { getAllCarts,deleteCart,updateCart,addCart } from "../controllers/Cart.j
 
 const router = express.Router();
 router.get("/:id",getAllCarts);
-router.patch("/add/",addCart);
-router.patch("/update/",updateCart);
+router.patch("/add",addCart);
+router.patch("/update",updateCart);
 router.delete("/delete",deleteCart);
 
 export default router;
