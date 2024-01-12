@@ -250,12 +250,29 @@ export const toprated = async (req, res) => {
 export const latestproducts = async (req, res) => {
   try {
     // Find the top 4 latest products based on the createdAt field
-    const latestProducts = await productsModel.find({})
+    const latestProducts = await productsModel
+      .find({})
       .sort({ createdAt: -1 })
       .limit(4);
     res.status(200).json({ success: true, products: latestProducts });
   } catch (error) {
     console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: error,
+    });
+  }
+};
+
+export const getRecommendations = async (req, res) => {
+  try {
+    let { count } = req.query;
+    const randomProducts = await productsModel.aggregate([
+      { $sample: { size: parseInt(count) } },
+    ]);
+    res.status(200).json({ success: true, products: randomProducts });
+  } catch (error) {
+    console.error("Error getting random products:", error);
     return res.status(500).json({
       success: false,
       message: error,
