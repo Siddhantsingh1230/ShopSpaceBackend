@@ -36,17 +36,33 @@ const ordersSchema = new mongoose.Schema({
   status:{
     type:String,
     required : true,
+    default: "pending",
   },
   userId :{
     type  : mongoose.Schema.Types.ObjectId,
     ref:"users",
     required : true,
   },
-  cartId:{
-    type  : mongoose.Schema.Types.ObjectId,
-    ref:"carts",
-    required : true,
-  }
+  cart: {
+    type: [mongoose.Schema.Types.Mixed],
+    required: true,
+  },
+  cardholder: {
+    type: String,
+    default: "",
+  },
+  cardno: {
+    type: String,
+    default: "",
+  },
+  creditexpiry: {
+    type: String,
+    default: "",
+  },
+  cardcvv: {
+    type: String,
+    default: "",
+  },
 });
 
 export const ordersModel = mongoose.model("orders",ordersSchema)
