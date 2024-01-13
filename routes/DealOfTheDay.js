@@ -15,6 +15,6 @@ router.get("/alldeals", getAllDeals);
 router.get("/getcurrentdeal", getCurrentDeal);
 router.post("/addnewdeal", isAdmin, addNewDeal);
 router.delete("/deletedeal/:id", isAdmin, deleteDeal);
-router.patch("/updatedeal/:id", updateDeal);
+router.patch("/updatedeal/:id", isAdmin, updateDeal);
 
 export default router;
