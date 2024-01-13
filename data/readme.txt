@@ -1,1 +1,1 @@
-! Files For storing all App related config files and Database connections
+! Files For storing all App related config files,firebase-utils and Database connections

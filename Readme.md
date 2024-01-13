@@ -5,4 +5,6 @@
 
 # Adding mail Services and setting up ejs
 
-# Creating Products DataSource 
+# Creating Products DataSource
+
+# Integrating Firebase
