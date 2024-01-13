@@ -17,8 +17,7 @@ const storage = getStorage(app);
 export const uploadFile = async (folder, filename, file) => {
   try {
     // Create a reference to the storage bucket and specify the filename
-    const filename = `${folder}/${filename}`;
-    const storageRef = ref(storage);
+    const storageRef = ref(storage,`${folder}/${filename}`);
 
     // Upload the file to Firebase Storage
     await uploadBytes(storageRef, file);

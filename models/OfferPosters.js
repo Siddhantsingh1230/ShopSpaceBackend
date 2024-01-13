@@ -6,7 +6,7 @@ const offerPostersSchema = new mongoose.Schema({
     ref: "products",
     required: true,
   },
-  posterImage: {
+  posterImageURL: {
     type: String,
     required:true,
   },
