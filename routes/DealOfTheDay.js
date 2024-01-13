@@ -9,6 +9,7 @@ import {
   deleteDeal,
   updateDeal,
 } from "../controllers/DealOfTheDay.js";
+import { isAdmin } from "../middlewares/auth.js";
 
 router.get("/alldeals", getAllDeals);
 router.get("/getcurrentdeal", getCurrentDeal);
