@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Upload Form</title>
+</head>
+<body>
+  <h1>File Upload Form</h1>
+  <form action="http://localhost:5000/v1/offer/addnewposter" method="post" enctype="multipart/form-data">
+    <label for="file">Choose a file:</label>
+    <input type="file" name="file" id="file" required>
+    <br>
+    <label for="productId">productId:</label>
+    <textarea name="productId" id="productId" rows="4" cols="50" required></textarea>
+    <br>
+    <button type="submit">Upload</button>
+  </form>
+</body>
+</html>
