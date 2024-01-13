@@ -43,7 +43,7 @@ export const addOrder = async (req, res) => {
     if (err) {
       return res.status(500).json({
         success: false,
-        error: err,
+        error: err.message,
       });
     }
   }
