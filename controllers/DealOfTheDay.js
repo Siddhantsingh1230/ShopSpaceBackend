@@ -19,15 +19,14 @@ export const getAllDeals = async (req, res) => {
 };
 export const getCurrentDeal = async (req, res) => {
   try {
-    const deals = await dealOfTheDayModel
-      .find({})
+    const deal = await dealOfTheDayModel
+      .findOne({})
       .sort({ createdAt: -1 })
       .populate("productId")
-      .limit(1);
-    if (!deals) {
+    if (!deal) {
       return res.status(404).json({ success: false, message: "No Deal Found" });
     }
-    res.status(200).json({ success: true, deals });
+    res.status(200).json({ success: true,deal });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: error });
@@ -36,7 +35,7 @@ export const getCurrentDeal = async (req, res) => {
 export const addNewDeal = async (req, res) => {
   try {
     const { productId, offerDuration } = req.body;
-    const deal = dealOfTheDayModel.create({ productId, offerDuration });
+    const deal = await dealOfTheDayModel.create({ productId, offerDuration });
     if (!deal) {
       return res
         .status(404)
@@ -51,7 +50,7 @@ export const addNewDeal = async (req, res) => {
 export const deleteDeal = async (req, res) => {
   try {
     const { id } = req.params;
-    const deal = dealOfTheDayModel.findByIdAndDelete(id);
+    const deal = await dealOfTheDayModel.findByIdAndDelete(id);
     if (!deal) {
       return res.status(404).json({ success: false, message: "No Deal Found" });
     }
@@ -65,7 +64,7 @@ export const updateDeal = async (req, res) => {
   try {
     const { id } = req.params;
     const { offerDuration } = req.body;
-    const deal = dealOfTheDayModel.findByIdAndUpdate(
+    const deal = await dealOfTheDayModel.findByIdAndUpdate(
       id,
       { offerDuration },
       { new: true }
