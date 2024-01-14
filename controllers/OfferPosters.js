@@ -44,7 +44,6 @@ export const addNewPoster = async (req, res) => {
     }
     res.status(200).json({ success: true, poster });
   } catch (error) {
-    console.log(error);
     res.status(500).json({ success: false, message: "Fail to Upload", error });
   }
 };
@@ -60,8 +59,23 @@ export const deletePoster = async (req, res) => {
     await deletefile(FIREBASE_OFFERS_FOLDER, poster.posterImageName);
     res.status(200).json({ success: true, message: "File Deleted" });
   } catch (error) {
-    console.log(error);
     res.status(500).json({ success: false, message: "Fail to Delete", error });
   }
 };
-export const updatePoster = async (req, res) => {};
+export const updatePoster = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { productId } = req.body;
+    const offer = await offerPostersModel.findByIdAndUpdate(
+      id,
+      { productId },
+      { new: true }
+    );
+    if (!offer) {
+      return res.status(404).json({ success: false, message: "No Offer Found" });
+    }
+    res.status(200).json({ success: true, offer });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Fail to Update", error });
+  }
+};
