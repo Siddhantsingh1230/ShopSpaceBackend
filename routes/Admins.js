@@ -21,7 +21,7 @@ router.post(
   login
 );
 router.get("/loginfailed", loginFailed);
-router.post("/logout", logout);
+router.get("/logout", logout);
 router.post("/signup", signup);
 router.get("/me", isAuthenticated, getUser);
 
