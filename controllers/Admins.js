@@ -4,11 +4,18 @@ import { sanitizeUser } from "../utils/services.js";
 
 export const login = async (req, res) => {
   // you will reach this only if ur sucessfully logged in else not
-  res.status(200).json({
-    success: true,
-    message: `Welcome , ${req.user.username}`,
-    user: sanitizeUser(req.user),
-  });
+  if (req.user?.role === "admin") {
+    res.status(200).json({
+      success: true,
+      message: `Welcome , ${req.user.username}`,
+      user: sanitizeUser(req.user),
+    });
+  } else {
+    res.status(404).json({
+      success: false,
+      message: `User not found`,
+    });
+  }
 };
 
 export const loginFailed = (req, res) => {
