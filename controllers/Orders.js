@@ -109,7 +109,7 @@ export const mostOrdered = async (req, res) => {
         $group: {
           _id: "$cart.productId._id",
           title: { $first: "$cart.productId.title" },
-          count: { $sum: 1 },
+          orders: { $sum: 1 },
         },
       },
       {
