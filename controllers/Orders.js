@@ -51,15 +51,15 @@ export const addOrder = async (req, res) => {
 export const updateOrder = async (req, res) => {
   try {
     const id = req.params.id;
-    const {status,userId} = req.body;
-    let result = await ordersModel.findByIdAndUpdate( id, {$set : {status}});
+    const { status, userId } = req.body;
+    let result = await ordersModel.findByIdAndUpdate(id, { $set: { status } });
     if (!result) {
       return res.status(500).json({
         success: false,
         message: "order not updated",
       });
     }
-    let order = await ordersModel.find({userId : userId});
+    let order = await ordersModel.find({ userId: userId });
     return res.status(200).json({
       success: true,
       orders: order,
@@ -94,5 +94,38 @@ export const deleteOrder = async (req, res) => {
         error: err,
       });
     }
+  }
+};
+
+// Below is a Statistical route
+
+export const mostOrdered = async (req, res) => {
+  try {
+    let orders = await ordersModel.aggregate([
+      {
+        $unwind: "$cart",
+      },
+      {
+        $group: {
+          _id: "$cart.productId._id",
+          title: { $first: "$cart.productId.title" },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $sort: { count: -1 },
+      }
+    ]);
+    
+    res.status(200).json({
+      success: true,
+      orders,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      error,
+    });
   }
 };
