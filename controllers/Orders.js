@@ -101,7 +101,7 @@ export const deleteOrder = async (req, res) => {
 
 export const mostOrdered = async (req, res) => {
   try {
-    let orders = await ordersModel.aggregate([
+    let products = await ordersModel.aggregate([
       {
         $unwind: "$cart",
       },
@@ -119,7 +119,7 @@ export const mostOrdered = async (req, res) => {
     
     res.status(200).json({
       success: true,
-      orders,
+      products,
     });
   } catch (error) {
     console.log(error);
