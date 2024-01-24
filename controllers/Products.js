@@ -94,10 +94,13 @@ export const deleteProduct = async (req, res) => {
     const product = await productsModel.findOne({ _id: id });
     if (product) {
       const result = await productsModel.deleteOne({ _id: id });
-      return res.status(200).json({
-        success: true,
-        result: result,
-      });
+      const products = await productsModel.find({});
+      if (products) {
+        return res.status(200).json({
+          success: true,
+          products,
+        });
+      }
     }
     return res.status(500).json({
       success: false,
