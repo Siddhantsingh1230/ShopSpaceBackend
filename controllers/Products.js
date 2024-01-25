@@ -286,15 +286,16 @@ export const getRecommendations = async (req, res) => {
 export const updateProductById = async (req, res) => {
   try {
     const id = req.params.id;
-    const product = await productsModel.findByIdAndUpdate(id, req.body, {
+    let products = await productsModel.findByIdAndUpdate(id, req.body, {
       new: true,
     });
-    if (!product) {
+    if (!products) {
       return res
         .status(400)
         .json({ success: false, message: "Product not updated" });
     }
-    res.status(200).json({ success: true, product });
+    products = await productsModel.find({});
+    res.status(200).json({ success: true, products });
   } catch (error) {
     return res.status(500).json({ success: false, message: "Error" + error });
   }
