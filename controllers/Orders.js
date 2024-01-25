@@ -174,18 +174,18 @@ export const mostUsedPaymentMethod = async (req, res) => {
       {
         $group: {
           _id: "$paymentMethod",
-          totalOrders: { $sum: 1 },
+          totalUsers: { $sum: 1 },
         },
       },
       {
         $project: {
           _id: 0, // Exclude the _id field
           paymentMethod: "$_id", // Rename _id to state
-          totalOrders: 1,
+          totalUsers: 1,
         },
       },
       {
-        $sort: { totalOrders: -1 },
+        $sort: { totalUsers: -1 },
       },
     ]);
     res.status(200).json({
@@ -258,28 +258,38 @@ export const bonusMonth = async (req, res) => {
             $let: {
               vars: {
                 months: [
-                  "","January", "February", "March", "April",
-                  "May", "June", "July", "August",
-                  "September", "October", "November", "December"
-                ]
+                  "",
+                  "January",
+                  "February",
+                  "March",
+                  "April",
+                  "May",
+                  "June",
+                  "July",
+                  "August",
+                  "September",
+                  "October",
+                  "November",
+                  "December",
+                ],
               },
               in: {
-                $arrayElemAt: ["$$months", "$_id"]
-              }
-            }
+                $arrayElemAt: ["$$months", "$_id"],
+              },
+            },
           }, // Rename _id to state
           totalOrders: 1,
         },
       },
       {
-        $sort: { totalOrders:-1 },
+        $sort: { totalOrders: -1 },
       },
     ]);
     res.status(200).json({
       success: true,
       months,
     });
-  } catch (erro) {
+  } catch (error) {
     console.log(error);
     res.status(500).json({
       success: false,
@@ -290,36 +300,81 @@ export const bonusMonth = async (req, res) => {
 
 // most cancelled product
 
-export const cancelledProducts = async(req,res) =>{
-  try{
+export const cancelledProducts = async (req, res) => {
+  try {
     const cancelledProductCount = await ordersModel.aggregate([
       {
-        $unwind: "$cart"
+        $unwind: "$cart",
       },
       {
         $match: {
-          "status": "cancelled"
-        }
+          status: "cancelled",
+        },
       },
       {
         $group: {
           _id: "$cart.productId.title",
-          count: { $sum: 1 }
-        }
-      },
+          cancelledCount: { $sum: 1 },
+        },
+      },{
+        $project: {
+          _id: 0, // Exclude the _id field
+          products: "$_id", // Rename _id to state
+          cancelledCount: 1,
+        },},
       {
-        $sort: { count:-1 },
+        $sort: { cancelledCount: -1 },
       },
     ]);
     res.status(200).json({
       success: true,
       cancelledProductCount,
     });
-  }catch (erro) {
+  } catch (error) {
     console.log(error);
     res.status(500).json({
       success: false,
       error,
     });
   }
-}
+};
+
+// delivery days of order
+
+export const deliveryCount = async (req, res) => {
+  try {
+    const deliveryCount = await ordersModel.aggregate([
+      {
+        $match: {
+          deliveredOn: { $exists: true }, // Filter only delivered orders
+        },
+      },
+      {
+        $group: {
+          _id: "$billingState",
+          deliveries: { $sum: 1 },
+        },
+      },
+      {
+        $project: {
+          _id: 0, // Exclude the _id field
+          location: "$_id", // Rename _id to state
+          deliveries: 1,
+        },
+      },
+      {
+        $sort: { _id: 1 }, // Sort by state in ascending order
+      },
+    ]);
+    res.status(200).json({
+      success: true,
+      deliveryCount,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      error,
+    });
+  }
+};

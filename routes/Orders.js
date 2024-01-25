@@ -10,6 +10,7 @@ import {
   commonCategory,
   bonusMonth,
   cancelledProducts,
+  deliveryCount,
 } from "../controllers/Orders.js";
 
 import { isAdmin } from "../middlewares/auth.js";
@@ -20,7 +21,8 @@ router.get("/mostcommonlocation", isAdmin, mostCommonLocation);
 router.get("/mostordered", isAdmin, mostOrdered);
 router.get("/mostusedpaymentmode", isAdmin, mostUsedPaymentMethod);
 router.get("/commoncategory", isAdmin, commonCategory);
-router.get("/cancelledProducts",isAdmin,cancelledProducts)
+router.get("/cancelledProducts",isAdmin,cancelledProducts);
+router.get("/deliverycounts",isAdmin,deliveryCount)
 router.get("/bonusmonth", isAdmin, bonusMonth);
 router.get("/:id", getOrders);
 router.post("/add", addOrder);
