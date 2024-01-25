@@ -11,6 +11,7 @@ import {
   toprated,
   latestproducts,
   getRecommendations,
+  updateProductById,
 } from "../controllers/Products.js";
 import { isAdmin } from "../middlewares/auth.js";
 
@@ -27,6 +28,7 @@ router.get("/filter", filterProduct);
 router.post("/add", isAdmin, addProduct);
 router.delete("/delete/:id", isAdmin, deleteProduct);
 router.patch("/viewcount/:id", incViewCount);
+router.patch("/update/:id",isAdmin,updateProductById);
 //it should remain at last
 router.get("/:id", getProductById);
 
