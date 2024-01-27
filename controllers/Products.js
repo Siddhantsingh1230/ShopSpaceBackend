@@ -75,6 +75,7 @@ export const addProduct = async (req, res) => {
     product = await productsModel.create(newProduct);
     return res.status(200).json({
       success: true,
+      message:"Product added",
       product: product,
     });
   } catch (error) {
