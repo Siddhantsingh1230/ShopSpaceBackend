@@ -1,3 +1,5 @@
+import { FIREBASE_PRODUCTS_FOLDER } from "../data/constants.js";
+import { deletefile } from "../data/firestorage.js";
 import { productsModel } from "../models/Products.js";
 import mongoose from "mongoose";
 
@@ -75,7 +77,7 @@ export const addProduct = async (req, res) => {
     product = await productsModel.create(newProduct);
     return res.status(200).json({
       success: true,
-      message:"Product added",
+      message: "Product added",
       product: product,
     });
   } catch (error) {
@@ -89,11 +91,44 @@ export const addProduct = async (req, res) => {
   }
 };
 
+const extractFilenameFromURL = (url) => {
+  const urlPattern = /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,})(\/\S*)?$/i;
+
+  // Test the string against the regular expression
+  if (urlPattern.test(url)) {
+    try {
+      // Create a URL object
+      const urlObject = new URL(url);
+
+      // Get the pathname (which includes the filename)
+      const pathname = urlObject.pathname;
+
+      // Extract the filename from the pathname and remove directory structure
+      const filename = pathname.split("/").pop().split("%2F").pop();
+
+      // Decode the URL-encoded filename
+      const decodedFilename = decodeURIComponent(filename);
+
+      return decodedFilename;
+    } catch (error) {
+      return url;
+    }
+  } else {
+    return url;
+  }
+};
+
 export const deleteProduct = async (req, res) => {
   try {
     const id = req.params.id;
     const product = await productsModel.findOne({ _id: id });
     if (product) {
+      let thumbnail = extractFilenameFromURL(product.thumbnail);
+      await deletefile(FIREBASE_PRODUCTS_FOLDER, thumbnail);
+      product.images.map(async (img) => {
+        let parsedImg = extractFilenameFromURL(img);
+        await deletefile(FIREBASE_PRODUCTS_FOLDER, parsedImg);
+      });
       const result = await productsModel.deleteOne({ _id: id });
       const products = await productsModel.find({});
       if (products) {
