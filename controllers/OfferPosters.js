@@ -42,7 +42,7 @@ export const addNewPoster = async (req, res) => {
         .status(500)
         .json({ success: false, message: "Fail to Upload" });
     }
-    res.status(200).json({ success: true, poster });
+    res.status(200).json({ success: true, message: "Offer added", poster });
   } catch (error) {
     res.status(500).json({ success: false, message: "Fail to Upload", error });
   }
@@ -72,7 +72,9 @@ export const updatePoster = async (req, res) => {
       { new: true }
     );
     if (!offer) {
-      return res.status(404).json({ success: false, message: "No Offer Found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "No Offer Found" });
     }
     res.status(200).json({ success: true, offer });
   } catch (error) {
