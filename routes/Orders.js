@@ -12,6 +12,7 @@ import {
   cancelledProducts,
   deliveryCount,
   getAllOrders,
+  updateOrderByAdmin,
 } from "../controllers/Orders.js";
 
 import { isAdmin } from "../middlewares/auth.js";
@@ -28,6 +29,7 @@ router.get("/bonusmonth", isAdmin, bonusMonth);
 router.get("/:id",isAdmin, getOrders);
 router.get("/",getAllOrders);
 router.post("/add", addOrder);
+router.patch("/updateByAdmin/:id",isAdmin,updateOrderByAdmin);
 router.patch("/update/:id", updateOrder);
 router.delete("/delete/:id", deleteOrder);
 
