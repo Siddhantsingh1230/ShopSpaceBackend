@@ -378,3 +378,38 @@ export const deliveryCount = async (req, res) => {
     });
   }
 };
+
+export const getAllOrders = async(req,res)=>{
+  try{
+    const orders =await ordersModel.find({});
+    
+    res.status(200).json({
+      success: true,
+      orders,
+    });
+  }catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      error,
+    });
+  }
+}
+
+export const updateOrderByAdmin = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const order = await ordersModel.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    if (!order) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Order not updated" });
+    }
+    let orders = await ordersModel.find({})
+    res.status(200).json({ success: true, orders });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: "Error" + error });
+  }
+};
