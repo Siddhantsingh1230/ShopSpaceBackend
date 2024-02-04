@@ -26,8 +26,8 @@ router.get("/commoncategory", isAdmin, commonCategory);
 router.get("/cancelledProducts",isAdmin,cancelledProducts);
 router.get("/deliverycounts",isAdmin,deliveryCount)
 router.get("/bonusmonth", isAdmin, bonusMonth);
-router.get("/:id",isAdmin, getOrders);
-router.get("/",getAllOrders);
+router.get("/:id",getOrders);
+router.get("/",isAdmin,getAllOrders);
 router.post("/add", addOrder);
 router.patch("/updateByAdmin/:id",isAdmin,updateOrderByAdmin);
 router.patch("/update/:id", updateOrder);
