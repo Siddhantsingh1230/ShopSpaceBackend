@@ -23,11 +23,11 @@ const ordersSchema = new mongoose.Schema({
   },
   placedOn: {
     type: Date,
-    default : Date.now()
+    default : Date.now
   },
   deliveredOn: {
     type: Date,
-    default : Date.now() +15
+    default : Date.now +15
   },
   totalAmount:{
     type:Number,

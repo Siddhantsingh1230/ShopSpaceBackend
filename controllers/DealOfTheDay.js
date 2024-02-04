@@ -20,13 +20,14 @@ export const getAllDeals = async (req, res) => {
 export const getCurrentDeal = async (req, res) => {
   try {
     const deal = await dealOfTheDayModel
-      .findOne({})
+      .find({})
       .sort({ createdAt: -1 })
-      .populate("productId")
+      .limit(1)
+      .populate("productId");
     if (!deal) {
       return res.status(404).json({ success: false, message: "No Deal Found" });
     }
-    res.status(200).json({ success: true,deal });
+    res.status(200).json({ success: true, deal: deal[0] });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: error });
@@ -35,13 +36,16 @@ export const getCurrentDeal = async (req, res) => {
 export const addNewDeal = async (req, res) => {
   try {
     const { productId, offerDuration } = req.body;
-    const deal = await dealOfTheDayModel.create({ productId, offerDuration });
+    const deal = await dealOfTheDayModel.create({
+      productId,
+      offerDuration
+    });
     if (!deal) {
       return res
         .status(404)
         .json({ success: false, message: "No Deals Found" });
     }
-    res.status(200).json({ success: true, deal });
+    res.status(200).json({ success: true, deal, message: "Deal added" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: error });
