@@ -18,6 +18,7 @@ import wishlistRouter from "./routes/Wishlist.js";
 import cartRouter from "./routes/Cart.js"
 import dodRouter from "./routes/DealOfTheDay.js";
 import offerPostersRouter from "./routes/OfferPosters.js";
+import notesRouter from "./routes/Notes.js";
 
 // Express app initilisation
 export const app = express();
@@ -72,6 +73,7 @@ app.use("/v1/wishlist",wishlistRouter); // v1 designation for v1 api
 app.use("/v1/cart",cartRouter); // v1 designation for v1 api
 app.use("/v1/dod",dodRouter); // v1 designation for v1 api
 app.use("/v1/offer",offerPostersRouter); // v1 designation for v1 api
+app.use("/v1/notes",notesRouter); // v1 designation for v1 api
 
 //Default route
 app.get("/", (req, res) => {
