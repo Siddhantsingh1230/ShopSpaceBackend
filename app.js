@@ -19,6 +19,7 @@ import cartRouter from "./routes/Cart.js"
 import dodRouter from "./routes/DealOfTheDay.js";
 import offerPostersRouter from "./routes/OfferPosters.js";
 import notesRouter from "./routes/Notes.js";
+import calenderRouter from "./routes/Calender.js";
 
 // Express app initilisation
 export const app = express();
@@ -61,19 +62,20 @@ app.use(
 // Initialzing passport Local Strategy
 initializePassport(passport);
 
-// Routes
-app.use("/v1", usersRouter); // v1 designation for v1 api
-app.use("/v1/admin", adminsRouter); // v1 designation for v1 api
-app.use("/v1/categories", categoriesRouter); // v1 designation for v1 api
-app.use("/v1/products", productsRouter); // v1 designation for v1 api
-app.use("/v1/reviews", reviewsRouter); // v1 designation for v1 api
-app.use("/v1/orderLocations", orderLocationRouter); // v1 designation for v1 api
-app.use("/v1/orders",orderRouter); // v1 designation for v1 api
-app.use("/v1/wishlist",wishlistRouter); // v1 designation for v1 api
-app.use("/v1/cart",cartRouter); // v1 designation for v1 api
-app.use("/v1/dod",dodRouter); // v1 designation for v1 api
-app.use("/v1/offer",offerPostersRouter); // v1 designation for v1 api
-app.use("/v1/notes",notesRouter); // v1 designation for v1 api
+// Routes // v1 designation for v1 api
+app.use("/v1", usersRouter); 
+app.use("/v1/admin", adminsRouter); 
+app.use("/v1/categories", categoriesRouter); 
+app.use("/v1/products", productsRouter); 
+app.use("/v1/reviews", reviewsRouter); 
+app.use("/v1/orderLocations", orderLocationRouter); 
+app.use("/v1/orders",orderRouter); 
+app.use("/v1/wishlist",wishlistRouter); 
+app.use("/v1/cart",cartRouter); 
+app.use("/v1/dod",dodRouter); 
+app.use("/v1/offer",offerPostersRouter); 
+app.use("/v1/notes",notesRouter); 
+app.use("/v1/calender",calenderRouter); 
 
 //Default route
 app.get("/", (req, res) => {

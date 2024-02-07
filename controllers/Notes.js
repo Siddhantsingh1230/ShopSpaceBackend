@@ -45,7 +45,7 @@ export const updateNote = async (req, res) => {
     let note = await notesModel.findByIdAndUpdate(id, req.body, {
       new: true,
     });
-    res.status(201).json({ success: true, message: "Note created ", note });
+    res.status(201).json({ success: true, message: "Note updated ", note });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, error });
