@@ -203,3 +203,14 @@ export const getUserNameByUserId = async (req, res) => {
     username: user.username,
   });
 };
+
+export const getTotalUsers = async (req, res) => {
+  try {
+    let count = await usersModel.countDocuments({});
+    if (count) {
+      return res.status(200).json({ success: true, count });
+    }return res.status(404).json({ success: false, message : "no user found"});
+  } catch (error) {
+    return res.status(500).json({ success: false, message: "Error" + error });
+  }
+};

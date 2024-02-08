@@ -12,6 +12,7 @@ import {
   latestproducts,
   getRecommendations,
   updateProductById,
+  getTotalViewsForAllProducts,
 } from "../controllers/Products.js";
 import { isAdmin } from "../middlewares/auth.js";
 import { upload } from "../middlewares/multer.js";
@@ -24,6 +25,7 @@ router.get("/topviewed", topviewed);
 router.get("/toprated", toprated);
 router.get("/getrecommendations", getRecommendations);
 router.get("/latestproducts", latestproducts);
+router.get("/getTotalViews", getTotalViewsForAllProducts);
 router.get("/", getAllProducts);
 router.get("/:page/:quantum/", getQuantizedProducts);
 router.get("/filter", filterProduct);
