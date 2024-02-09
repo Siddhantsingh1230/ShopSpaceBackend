@@ -116,3 +116,14 @@ export const updateCart = async (req, res) => {
     }
   }
 };
+
+export const getTotalCartItems = async (req, res) => {
+  try {
+    let count = await cartsModel.countDocuments({});
+    if (count) {
+      return res.status(200).json({ success: true, count });
+    }return res.status(404).json({ success: false, message : "cart is empty"});
+  } catch (error) {
+    return res.status(500).json({ success: false, message: "Error" + error });
+  }
+};

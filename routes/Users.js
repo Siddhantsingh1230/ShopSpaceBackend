@@ -14,6 +14,7 @@ import {
   forgotpassword,
   resetpassword,
   getUserNameByUserId,
+  getTotalUsers
 } from "../controllers/Users.js";
 import { isAdmin, isAuthenticated } from "../middlewares/auth.js";
 
@@ -28,6 +29,7 @@ router.post(
 );
 router.get("/loginfailed", loginFailed);
 router.get("/logout", logout);
+router.get("/getTotalUsers", getTotalUsers);
 router.post("/signup", signup);
 router.get("/me", isAuthenticated, getUser);
 router.put("/update/:id", isAuthenticated, updateUser);

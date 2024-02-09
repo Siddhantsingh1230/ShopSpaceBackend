@@ -316,12 +316,14 @@ export const cancelledProducts = async (req, res) => {
           _id: "$cart.productId.title",
           cancelledCount: { $sum: 1 },
         },
-      },{
+      },
+      {
         $project: {
           _id: 0, // Exclude the _id field
           products: "$_id", // Rename _id to state
           cancelledCount: 1,
-        },},
+        },
+      },
       {
         $sort: { cancelledCount: -1 },
       },
@@ -379,22 +381,22 @@ export const deliveryCount = async (req, res) => {
   }
 };
 
-export const getAllOrders = async(req,res)=>{
-  try{
-    const orders =await ordersModel.find({});
-    
+export const getAllOrders = async (req, res) => {
+  try {
+    const orders = await ordersModel.find({});
+
     res.status(200).json({
       success: true,
       orders,
     });
-  }catch (error) {
+  } catch (error) {
     console.log(error);
     res.status(500).json({
       success: false,
       error,
     });
   }
-}
+};
 
 export const updateOrderByAdmin = async (req, res) => {
   const { id } = req.params;
@@ -407,9 +409,50 @@ export const updateOrderByAdmin = async (req, res) => {
         .status(400)
         .json({ success: false, message: "Order not updated" });
     }
-    let orders = await ordersModel.find({})
+    let orders = await ordersModel.find({});
     res.status(200).json({ success: true, orders });
   } catch (error) {
     return res.status(500).json({ success: false, message: "Error" + error });
+  }
+};
+
+export const getTotalOrders = async (req, res) => {
+  try {
+    let count = await ordersModel.countDocuments({});
+    if (count) {
+      return res.status(200).json({ success: true, count });
+    }return res.status(404).json({ success: false, message : "no order found"});
+  } catch (error) {
+    return res.status(500).json({ success: false, message: "Error" + error });
+  }
+};
+
+export const getTotalEarnings = async (req, res) => {
+  try {
+    // Use the aggregate pipeline to calculate the total amount earned for shipped orders
+    const result = await ordersModel.aggregate([
+      {
+        $match: {
+          status: "shipped"
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          totalAmountEarned: { $sum: "$totalAmount" }
+        }
+      }
+    ]);
+
+    // Check if the result is not empty
+    if (result.length > 0) {
+      const totalAmountEarned = result[0].totalAmountEarned;
+      return res.status(200).json({ success: true, totalAmountEarned });
+    } else {
+      return res.status(404).json({ success: false, message: "No shipped orders found" });
+    }
+  } catch (error) {
+    console.error('Error fetching total amount earned for shipped orders:', error);
+    return res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };

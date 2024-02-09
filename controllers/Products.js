@@ -336,3 +336,32 @@ export const updateProductById = async (req, res) => {
     return res.status(500).json({ success: false, message: "Error" + error });
   }
 };
+
+export const getTotalViewsForAllProducts = async (req, res) => {
+  try {
+    // Use the aggregate pipeline to calculate the total views for all products
+    const result = await productsModel.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalViews: { $sum: "$viewCount" },
+        },
+      },
+    ]);
+
+    // Check if the result is not empty
+    if (result.length > 0) {
+      const totalViews = result[0].totalViews;
+      return res.status(200).json({ success: true, totalViews });
+    } else {
+      return res
+        .status(404)
+        .json({ success: false, message: "No products found" });
+    }
+  } catch (error) {
+    console.error("Error fetching total views for all products:", error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error" });
+  }
+};
