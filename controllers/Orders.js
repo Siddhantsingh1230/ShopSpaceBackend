@@ -1,4 +1,7 @@
 import { ordersModel } from "../models/Orders.js";
+import { usersModel } from "../models/Users.js";
+import { sendOrderPlaced } from "../utils/services.js";
+import mongoose from "mongoose";
 
 export const getOrders = async (req, res) => {
   try {
@@ -29,11 +32,35 @@ export const addOrder = async (req, res) => {
     const order = req.body;
     let result = await ordersModel.create(order);
     if (result) {
+      const userId = new mongoose.Types.ObjectId(order.userId);
+      console.log(userId);
+
+      // Corrected findById usage
+      const user = await usersModel.findById(userId);
+      console.log(user);
+
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: "User not found",
+        });
+      }
+      const link = `http://localhost:3000/orders/${userId}`;
+      sendOrderPlaced(
+        user.username,
+        new Date().toLocaleString(),
+        process.env.EMAIL_ID,
+        process.env.EMAIL_PASS,
+        order.checkoutEmail,
+        link
+      );
+      console.log("send add order email");
       return res.status(200).json({
         success: true,
         result: result,
       });
     }
+
     return res.status(500).json({
       success: false,
       message: "Order not created",
@@ -421,7 +448,8 @@ export const getTotalOrders = async (req, res) => {
     let count = await ordersModel.countDocuments({});
     if (count) {
       return res.status(200).json({ success: true, count });
-    }return res.status(404).json({ success: false, message : "no order found"});
+    }
+    return res.status(404).json({ success: false, message: "no order found" });
   } catch (error) {
     return res.status(500).json({ success: false, message: "Error" + error });
   }
@@ -433,15 +461,15 @@ export const getTotalEarnings = async (req, res) => {
     const result = await ordersModel.aggregate([
       {
         $match: {
-          status: "shipped"
-        }
+          status: "shipped",
+        },
       },
       {
         $group: {
           _id: null,
-          totalAmountEarned: { $sum: "$totalAmount" }
-        }
-      }
+          totalAmountEarned: { $sum: "$totalAmount" },
+        },
+      },
     ]);
 
     // Check if the result is not empty
@@ -449,10 +477,17 @@ export const getTotalEarnings = async (req, res) => {
       const totalAmountEarned = result[0].totalAmountEarned;
       return res.status(200).json({ success: true, totalAmountEarned });
     } else {
-      return res.status(404).json({ success: false, message: "No shipped orders found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "No shipped orders found" });
     }
   } catch (error) {
-    console.error('Error fetching total amount earned for shipped orders:', error);
-    return res.status(500).json({ success: false, message: "Internal Server Error" });
+    console.error(
+      "Error fetching total amount earned for shipped orders:",
+      error
+    );
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error" });
   }
 };
