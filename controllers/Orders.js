@@ -31,14 +31,17 @@ export const addOrder = async (req, res) => {
   try {
     const order = req.body;
     let result = await ordersModel.create(order);
+    console.log(result._id.toString())
     if (result) {
       const userId = new mongoose.Types.ObjectId(order.userId);
       console.log(userId);
 
       // Corrected findById usage
       const user = await usersModel.findById(userId);
-      console.log(user);
-
+      console.log(result);
+      const products = result.cart;
+      const id = result._id.toString();
+      console.log(products);
       if (!user) {
         return res.status(404).json({
           success: false,
@@ -52,7 +55,10 @@ export const addOrder = async (req, res) => {
         process.env.EMAIL_ID,
         process.env.EMAIL_PASS,
         order.checkoutEmail,
-        link
+        link,
+        order,
+        products,
+        id
       );
       console.log("send add order email");
       return res.status(200).json({
