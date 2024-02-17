@@ -1,5 +1,5 @@
 import express from "express";
-import { getWishlist,addProductToWishlist,removeProductFromWishlist } from "../controllers/Wishlist.js";
+import { getWishlist,addProductToWishlist,removeProductFromWishlist } from "../controllers/Wishlist";
 
 const router = express.Router();
 router.get("/:id",getWishlist);
