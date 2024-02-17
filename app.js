@@ -14,7 +14,7 @@ import productsRouter from "./routes/Products.js";
 import reviewsRouter from "./routes/Reviews.js";
 import orderLocationRouter from "./routes/OrderLocation.js";
 import orderRouter from "./routes/Orders.js";
-import wishlistRouter from "./routes/Wishlist.js";
+import wishlistRouter from "./routes/wishlist.js";
 import cartRouter from "./routes/Cart.js"
 import dodRouter from "./routes/DealOfTheDay.js";
 import offerPostersRouter from "./routes/OfferPosters.js";
