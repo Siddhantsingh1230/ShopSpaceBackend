@@ -53,7 +53,6 @@ app.use(
       process.env.ADMIN_URI,
       "http://localhost:5000",
       "http://localhost:3000",
-      "https://shopspaceserver.vercel.app",
     ],
     method: ["GET", "POST", "DELETE", "PUT", "PATCH"],
     credentials: true,
