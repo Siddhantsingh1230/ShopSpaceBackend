@@ -3,6 +3,7 @@ import { configDotenv } from "dotenv";
 import path from "path";
 import cors from "cors";
 import passport from "passport";
+import session from "express-session";
 import MongoStore from "connect-mongo";
 import { initializePassport } from "./passport/config.js";
 import cookieParser from "cookie-parser";
@@ -40,11 +41,11 @@ configDotenv({
 //-momery unleaked---------
 
 app.use(
-  express.session({
+  session({
     secret: process.env.SECRET_KEY,
     resave: false, // don't save session if unmodified
     saveUninitialized: false, // don't create session until session is initialized
-    store: MongoStore.create({
+    store: new MongoStore({
       mongoUrl: process.env.MONGODB_URI,
       autoRemove: "interval",
       autoRemoveInterval: 10, // In minutes. Default
