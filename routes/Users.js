@@ -24,6 +24,7 @@ router.post(
   passport.authenticate("local", {
     failureMessage: true,
     failureRedirect: "/v1/loginfailed",
+    session:false,
   }),
   login
 );

@@ -17,6 +17,7 @@ router.post(
   passport.authenticate("local", {
     failureMessage: true,
     failureRedirect: "/v1/admin/loginfailed",
+    session:false,
   }),
   login
 );
