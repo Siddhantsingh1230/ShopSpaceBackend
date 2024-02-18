@@ -3,7 +3,8 @@ import { configDotenv } from "dotenv";
 import path from "path";
 import cors from "cors";
 import passport from "passport";
-import session from "cookie-session";
+import session from "express-session";
+import memorystore from 'memorystore';
 import { initializePassport } from "./passport/config.js";
 import cookieParser from "cookie-parser";
 
@@ -38,13 +39,16 @@ configDotenv({
 
 // Session
 //-momery unleaked---------
-app.set('trust proxy', 1);
+const MemoryStore = memorystore(session);
 
 app.use(
   session({
     secret: process.env.SECRET_KEY,
     resave: false, // don't save session if unmodified
     saveUninitialized: false, // don't create session until session is initialized
+    store: new MemoryStore({
+      checkPeriod: 86400000 // prune expired entries every 24h
+    }),
     cookie: {
       sameSite: "none",
       secure: true,
