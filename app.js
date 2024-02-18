@@ -45,6 +45,11 @@ app.use(
     secret: process.env.SECRET_KEY,
     resave: false, // don't save session if unmodified
     saveUninitialized: false, // don't create session until session is initialized
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGODB_URI,
+      autoRemove: "interval",
+      autoRemoveInterval: 10, // In minutes. Default
+    }),
     cookie: {
       sameSite: 'none',
       secure: true, 
@@ -53,7 +58,8 @@ app.use(
   },
   })
 );
-app.use(passport.authenticate("session"));
+app.use(passport.initialize());
+app.use(passport.session());
 
 //CORS
 app.use(
