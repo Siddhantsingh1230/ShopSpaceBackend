@@ -3,7 +3,7 @@ import { configDotenv } from "dotenv";
 import path from "path";
 import cors from "cors";
 import passport from "passport";
-import session from "express-session";
+import session from "cookie-session";
 import { initializePassport } from "./passport/config.js";
 import cookieParser from "cookie-parser";
 
