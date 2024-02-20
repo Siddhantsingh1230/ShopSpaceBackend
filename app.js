@@ -66,9 +66,9 @@ app.use(
 
 // Initialzing passport Local Strategy
 initializePassport(passport);
-
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(passport.authenticate('session'));
 
 // Routes // v1 designation for v1 api
 app.use("/v1", usersRouter);
