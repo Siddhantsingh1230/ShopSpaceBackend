@@ -37,6 +37,7 @@ configDotenv({
   path: "./data/config.env",
 });
 
+app.enable('trust proxy')
 // Session
 //-momery unleaked---------
 
