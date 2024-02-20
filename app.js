@@ -48,8 +48,7 @@ app.use(
     store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI })
   })
 );
-app.use(passport.initialize());
-app.use(passport.session());
+
 
 //CORS
 app.use(
@@ -67,6 +66,9 @@ app.use(
 
 // Initialzing passport Local Strategy
 initializePassport(passport);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Routes // v1 designation for v1 api
 app.use("/v1", usersRouter);
