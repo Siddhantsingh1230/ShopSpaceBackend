@@ -38,24 +38,14 @@ configDotenv({
 });
 
 // Session
-//-momery unleaked---------
+//-memory unleaked---------
 
 app.use(
   session({
     secret: process.env.SECRET_KEY,
     resave: false, // don't save session if unmodified
     saveUninitialized: false, // don't create session until session is initialized
-    store: MongoStore.create({
-      mongoUrl: process.env.MONGODB_URI,
-      autoRemove: "interval",
-      autoRemoveInterval: 10, // In minutes. Default
-    }),
-    cookie: {
-      sameSite: 'none',
-      secure: true, 
-      httpOnly: true,
-      maxAge: 14 * 24 * 60 * 60,
-  },
+    store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI })
   })
 );
 app.use(passport.initialize());
