@@ -1,29 +1,34 @@
 import { usersModel } from "../models/Users.js";
 import bcrypt from "bcrypt";
-import { sanitizeUser } from "../utils/services.js";
+import { sanitizeUser, sendCookie } from "../utils/services.js";
 
 export const login = async (req, res) => {
   // you will reach this only if ur sucessfully logged in else not
-  if (req.user?.role === "admin") {
-    res.status(200).json({
-      success: true,
-      message: `Welcome , ${req.user.username}`,
-      user: sanitizeUser(req.user),
-    });
+  const { email, password, role } = req.body;
+  if (role === "admin") {
+    let user = await usersModel.findOne({ email }).select("+password");
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found!",
+      });
+    }
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(500).json({
+        success: false,
+        message: "Invalid email or password!",
+      });
+    }
+    sendCookie(sanitizeUser(user), res, `Welcome back, ${user.username}`);
   } else {
     res.status(404).json({
       success: false,
-      message: `User not found`,
+      message: `User not found!`,
     });
   }
 };
 
-export const loginFailed = (req, res) => {
-  return res.status(500).json({
-    success: false,
-    message: "Invalid Credentials",
-  });
-};
 
 export const signup = async (req, res, done) => {
   const { username, mobileNo, email, password } = req.body;
@@ -56,12 +61,14 @@ export const getUser = async (req, res) => {
 
 export const logout = (req, res) => {
   try {
-    req.logout((err) => {
-      if (err) {
-        return next(err);
-      }
-      res.status(200).json({ success: true, message: "Logged out" });
-    });
+    res
+      .status(200)
+      .cookie("token", "", {
+        expires: new Date(Date.now()),
+        sameSite: "none",
+        secure: true,
+      })
+      .json({ success: true, message: "Logout successfull" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, error });

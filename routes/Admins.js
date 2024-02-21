@@ -1,5 +1,4 @@
 import express from "express";
-import passport from "passport";
 
 const router = express.Router();
 
@@ -8,21 +7,15 @@ import {
   login,
   signup,
   logout,
-  loginFailed,
 } from "../controllers/Admins.js";
-import { isAuthenticated } from "../middlewares/auth.js";
+import { isAdmin } from "../middlewares/auth.js";
 
 router.post(
   "/login",
-  passport.authenticate("local", {
-    failureMessage: true,
-    failureRedirect: "/v1/admin/loginfailed",
-  }),
   login
 );
-router.get("/loginfailed", loginFailed);
 router.get("/logout", logout);
 router.post("/signup", signup);
-router.get("/me", isAuthenticated, getUser);
+router.get("/me", isAdmin, getUser);
 
 export default router;

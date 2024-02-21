@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import ejs from "ejs";
 import path from "path";
+import jwt from "jsonwebtoken";
 
 export const sanitizeUser = (user) => {
   const {
@@ -117,7 +118,8 @@ export const sendOrderPlaced = (
   recipient,
   link,
   order,
-  products,id
+  products,
+  id
 ) => {
   var transporter = nodemailer.createTransport({
     service: "Gmail",
@@ -146,7 +148,8 @@ export const sendOrderPlaced = (
     date,
     email: recipient,
     order,
-    products,id
+    products,
+    id,
   };
 
   // Render the EJS template
@@ -195,4 +198,32 @@ export const sendOrderPlaced = (
   //     console.log("Email sent: " + info.response);
   //   }
   // });
+};
+
+//Send Cookies
+export const sendCookie = (
+  user,
+  res,
+  message,
+  statusCode = 200,
+  remember = false
+) => {
+  const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY);
+  let timeout = 15;
+  if (remember) {
+    timeout = 60;
+  }
+  res
+    .status(statusCode)
+    .cookie("token", token, {
+      httpOnly: true,
+      maxAge: timeout * 60 * 1000,
+      sameSite: "none",
+      secure: true,
+    })
+    .json({
+      success: true,
+      message,
+      user,
+    });
 };

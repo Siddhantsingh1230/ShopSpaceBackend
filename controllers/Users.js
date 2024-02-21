@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import {
   sanitizeUser,
+  sendCookie,
   sendPasswordResetMail,
   sendRegMail,
 } from "../utils/services.js";
@@ -25,19 +26,24 @@ export const getAllRegisteredUsers = async (req, res) => {
 
 export const login = async (req, res) => {
   // you will reach this only if ur sucessfully logged in else not
-  res.status(200).json({
-    success: true,
-    message: `Welcome , ${req.user.username}`,
-    user: sanitizeUser(req.user),
-  });
+  const { email, password } = req.body;
+  let user = await usersModel.findOne({ email }).select("+password");
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found!",
+    });
+  }
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    return res.status(500).json({
+      success: false,
+      message: "Invalid email or password!",
+    });
+  }
+  sendCookie(sanitizeUser(user), res, `Welcome back, ${user.username}`);
 };
 
-export const loginFailed = (req, res) => {
-  return res.status(500).json({
-    success: false,
-    message: "Invalid Credentials",
-  });
-};
 
 export const signup = async (req, res) => {
   const { username, mobileNo, email, password } = req.body;
@@ -77,12 +83,14 @@ export const getUser = async (req, res) => {
 
 export const logout = (req, res) => {
   try {
-    req.logout((err) => {
-      if (err) {
-        return next(err);
-      }
-      res.status(200).json({ success: true, message: "Logged out" });
-    });
+    res
+      .status(200)
+      .cookie("token", "", {
+        expires: new Date(Date.now()),
+        sameSite: "none",
+        secure: true,
+      })
+      .json({ success: true, message: "Logout successfull" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, error });
@@ -209,7 +217,8 @@ export const getTotalUsers = async (req, res) => {
     let count = await usersModel.countDocuments({});
     if (count) {
       return res.status(200).json({ success: true, count });
-    }return res.status(404).json({ success: false, message : "no user found"});
+    }
+    return res.status(404).json({ success: false, message: "no user found" });
   } catch (error) {
     return res.status(500).json({ success: false, message: "Error" + error });
   }

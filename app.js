@@ -2,10 +2,6 @@ import express from "express";
 import { configDotenv } from "dotenv";
 import path from "path";
 import cors from "cors";
-import passport from "passport";
-import session from "express-session";
-import MongoStore from "connect-mongo";
-import { initializePassport } from "./passport/config.js";
 import cookieParser from "cookie-parser";
 
 // Importing all Routes
@@ -37,18 +33,6 @@ configDotenv({
   path: "./data/config.env",
 });
 
-// Session
-//-memory unleaked---------
-
-app.use(
-  session({
-    secret: process.env.SECRET_KEY,
-    resave: false, // don't save session if unmodified
-    saveUninitialized: false, // don't create session until session is initialized
-    store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI })
-  })
-);
-
 
 //CORS
 app.use(
@@ -58,18 +42,13 @@ app.use(
       process.env.ADMIN_URI,
       "http://localhost:5000",
       "http://localhost:3000",
+      "http://localhost:3001",
     ],
     method: ["GET", "POST", "DELETE", "PUT", "PATCH"],
-    credentials: true,
+    credentials: true,  
   })
 );
-app.set('trust proxy', 1)
 
-// Initialzing passport Local Strategy
-initializePassport(passport);
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(passport.authenticate('session'));
 
 // Routes // v1 designation for v1 api
 app.use("/v1", usersRouter);
