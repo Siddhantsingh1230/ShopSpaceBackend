@@ -4,15 +4,15 @@ import { sanitizeUser, sendCookie } from "../utils/services.js";
 
 export const login = async (req, res) => {
   // you will reach this only if ur sucessfully logged in else not
-  const { email, password, role } = req.body;
-  if (role === "admin") {
-    let user = await usersModel.findOne({ email }).select("+password");
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found!",
-      });
-    }
+  const { email, password } = req.body;
+  let user = await usersModel.findOne({ email }).select("+password");
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found!",
+    });
+  }
+  if (user.role === "admin") {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(500).json({
@@ -24,11 +24,10 @@ export const login = async (req, res) => {
   } else {
     res.status(404).json({
       success: false,
-      message: `User not found!`,
+      message: `Not Authorized!`,
     });
   }
 };
-
 
 export const signup = async (req, res, done) => {
   const { username, mobileNo, email, password } = req.body;
