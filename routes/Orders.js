@@ -31,7 +31,7 @@ router.get("/deliverycounts", isAdmin, deliveryCount);
 router.get("/bonusmonth", isAdmin, bonusMonth);
 router.get("/getTotalOrders", isAdmin, getTotalOrders);
 router.get("/getTotalEarnings", isAdmin, getTotalEarnings);
-router.get("/getBestSeller",isAdmin,  bestSeller);
+router.get("/getBestSeller",bestSeller);
 router.get("/:id", getOrders);
 router.get("/", isAdmin, getAllOrders);
 router.post("/add", addOrder);
