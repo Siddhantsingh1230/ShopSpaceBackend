@@ -31,7 +31,7 @@ export const addOrder = async (req, res) => {
   try {
     const order = req.body;
     let result = await ordersModel.create(order);
-    console.log(result._id.toString())
+    console.log(result._id.toString());
     if (result) {
       const userId = new mongoose.Types.ObjectId(order.userId);
       console.log(userId);
@@ -495,5 +495,43 @@ export const getTotalEarnings = async (req, res) => {
     return res
       .status(500)
       .json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+//best seller
+
+export const bestSeller = async (req, res) => {
+  try {
+    let products = await ordersModel.aggregate([
+      {
+        $match: {
+          status: "shipped",
+        },
+      },
+      {
+        $unwind: "$cart",
+      },
+      {
+        $group: {
+          _id: "$cart.productId._id",
+          title: { $first: "$cart.productId.title" },
+          counts: { $sum: 1 },
+        },
+      },
+      {
+        $sort: { count: -1 },
+      },
+    ]);
+    console.log(products);
+    res.status(200).json({
+      success: true,
+      products,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      error,
+    });
   }
 };
