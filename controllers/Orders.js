@@ -515,14 +515,19 @@ export const bestSeller = async (req, res) => {
         $group: {
           _id: "$cart.productId._id",
           title: { $first: "$cart.productId.title" },
+          thumbnail: { $first: "$cart.productId.thumbnail" },
+          price: { $first: "$cart.productId.price" },
+          discountPercentage: { $first: "$cart.productId.discountPercentage" },
           counts: { $sum: 1 },
         },
+      },
+      {
+        $limit: 4,
       },
       {
         $sort: { count: -1 },
       },
     ]);
-    console.log(products);
     res.status(200).json({
       success: true,
       products,
