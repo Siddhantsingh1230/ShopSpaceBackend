@@ -29,6 +29,9 @@ export const sendRegMail = (name, date, from, pass, recipient, sub) => {
   // Create a Nodemailer transporter
   const transporter = nodemailer.createTransport({
     service: "Gmail", // e.g., 'Gmail', 'Outlook'
+    secure: false,
+    ignoreTLS: true,
+    secureConnection: false,
     auth: {
       user: from,
       pass: pass,
@@ -87,6 +90,9 @@ export const sendPasswordResetMail = (
 ) => {
   var transporter = nodemailer.createTransport({
     service: "Gmail",
+    secure: false,
+    ignoreTLS: true,
+    secureConnection: false,
     auth: {
       user: from,
       pass: pass,

@@ -158,7 +158,7 @@ export const forgotpassword = async (req, res) => {
     process.env.SECRET_KEY,
     { expiresIn: 300 }
   );
-  const link = `http://localhost:3000/resetpassword/${user._id}/${token}`;
+  const link = `${process.env.FRONTEND_URI}/resetpassword/${user._id}/${token}`;
   sendPasswordResetMail(
     user.username,
     new Date().toLocaleString(),
