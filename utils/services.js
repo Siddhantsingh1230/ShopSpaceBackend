@@ -29,12 +29,18 @@ export const sendRegMail = (name, date, from, pass, recipient, sub) => {
   // Create a Nodemailer transporter
   const transporter = nodemailer.createTransport({
     service: "Gmail", // e.g., 'Gmail', 'Outlook'
+    port: 2525,
     secure: false,
     ignoreTLS: true,
     secureConnection: false,
     auth: {
       user: from,
       pass: pass,
+    },
+    requiresAuth: true,
+    tls: {
+      rejectUnauthorized: false,
+      //    ciphers: "SSLv3"
     },
   });
 
@@ -91,11 +97,17 @@ export const sendPasswordResetMail = (
   var transporter = nodemailer.createTransport({
     service: "Gmail",
     secure: false,
+    port: 2525,
     ignoreTLS: true,
     secureConnection: false,
     auth: {
       user: from,
       pass: pass,
+    },
+    requiresAuth: true,
+    tls: {
+      rejectUnauthorized: false,
+      //    ciphers: "SSLv3"
     },
   });
 
